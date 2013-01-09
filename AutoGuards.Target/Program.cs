@@ -17,7 +17,7 @@ namespace AutoGuards.Target
             Console.ReadLine();
         }
 
-        private static void DoSomething([NotNull] object obj)
+        private static void DoSomething([NotNull] StringBuilder obj)
         {
             
         }

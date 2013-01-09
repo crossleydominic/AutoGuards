@@ -17,6 +17,7 @@ namespace AutoGuards.Engine.Emitters
 
         public override StatementSyntax EmitGuard(TypeSymbol parameterType, string parameterName)
         {
+            //TODO: Replace hardcoded names/symbols
             StatementSyntax guardStatement = Syntax.IfStatement(
                 Syntax.BinaryExpression(
                     SyntaxKind.EqualsExpression,
@@ -26,7 +27,7 @@ namespace AutoGuards.Engine.Emitters
                         Syntax.ThrowStatement(
                             Syntax.ObjectCreationExpression(
                                 Syntax.Token(Syntax.Whitespace(" "), SyntaxKind.NewKeyword, Syntax.Whitespace(" ")),
-                                Syntax.QualifiedName(Syntax.IdentifierName("global::System"), Syntax.IdentifierName("ArgumentNullException")), 
+                                Syntax.QualifiedName(Syntax.IdentifierName("global::System"), Syntax.IdentifierName("ArgumentNullException")), //TODO: Is there a better way of doing this?
                                 Syntax.ArgumentList(Syntax.SeparatedList(Syntax.Argument(
                                     Syntax.LiteralExpression(
                                         SyntaxKind.StringLiteralExpression,

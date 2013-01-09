@@ -71,6 +71,22 @@ namespace AutoGuards.CompileConsole
                 using (var file = new FileStream("CompiledTarget.exe", FileMode.Create))
                 {
                     var result = compilation.Emit(file);
+
+                    if (result.Success)
+                    {
+                        Console.WriteLine("Compilation succeeded");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Compilation failed");
+
+                        foreach (Diagnostic diagnostic in result.Diagnostics)
+                        {
+                            Console.WriteLine(string.Empty);
+                            Console.WriteLine(diagnostic.Info);
+                            Console.WriteLine(diagnostic.Location);
+                        }
+                    }
                 }
             }
         }

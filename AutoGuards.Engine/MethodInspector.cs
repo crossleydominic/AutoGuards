@@ -33,18 +33,20 @@ namespace AutoGuards.Engine
 
                 foreach (var attribute in parameter.GetAttributes())
                 {
-                    //TODO: Think of a nicer way to ensure the type is declared in the correct assembly
-                    if (string.Equals(attribute.AttributeClass.ContainingAssembly.Name, typeof (AutoGuardAttribute).Assembly.GetName().Name))
+                    //TODO: Think of a nicer way to ensure the type is declared in the correct assembly and derives from the correct type
+                    Type baseAutoGuardType = typeof (AutoGuardAttribute);
+                    if (string.Equals(attribute.AttributeClass.BaseType.ContainingAssembly.Name, baseAutoGuardType.Assembly.GetName().Name, StringComparison.Ordinal) &&
+                        string.Equals(attribute.AttributeClass.BaseType.Name, baseAutoGuardType.Name, StringComparison.Ordinal))
                     {
                         if (guardedParameter == null)
                         {
                             guardedParameter = new GuardedParameter();
                             guardedParameter.ParameterName = parameter.Name;
                             guardedParameter.ParameterType = parameter.Type;
-
+                            
                             resolvedParameters.Add(guardedParameter);
                         }
-
+                        
                         guardedParameter.Emitters.Add(_emitterResolver.Resolve(attribute.AttributeClass.Name));
                     }
                 } 
@@ -52,17 +54,5 @@ namespace AutoGuards.Engine
 
             return resolvedParameters;
         }
-    }
-
-    public class GuardedParameter
-    {
-        public GuardedParameter()
-        {
-            Emitters = new List<AutoGuardEmitter>();
-        }
-
-        public string ParameterName { get; set; }
-        public TypeSymbol ParameterType { get; set; }
-        public List<AutoGuardEmitter> Emitters { get; set; }
     }
 }
