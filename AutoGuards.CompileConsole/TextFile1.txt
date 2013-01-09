@@ -1,0 +1,135 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Roslyn.Compilers;
+using Roslyn.Compilers.CSharp;
+using Roslyn.Compilers.Common;
+using Roslyn.Services;
+using Roslyn.Services.CSharp;
+
+namespace AutoGuards.CompileConsole
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IWorkspace workspace = Workspace.LoadStandAloneProject(@"C:\Dev\MySolutions\AutoGuards\AutoGuards.Target\AutoGuards.Target.csproj");
+
+            foreach (var project in workspace.CurrentSolution.Projects)
+            {
+                var compilation = project.GetCompilation();
+
+
+
+                foreach (var document in project.Documents)
+                {
+
+                    var semanticModel = document.GetSemanticModel();
+
+                    var visitor = new TransformRewriter();
+
+                    var blah = visitor.Visit(SyntaxTree.ParseText(document.GetSyntaxTree().GetRoot().ToFullString()).GetRoot());
+
+                    compilation = compilation.ReplaceSyntaxTree(document.GetSyntaxTree(), SyntaxTree.ParseText(blah.ToFullString()));
+
+                    CommonSyntaxNode modifiedSource = ModifyTree(semanticModel, document.GetSyntaxTree().GetRoot());
+
+                    modifiedSource = blah;
+
+                    //ISolution newSolution = workspace.CurrentSolution.UpdateDocument(document.Id, modifiedSource);
+
+                    //workspace.ApplyChanges(workspace.CurrentSolution, newSolution);
+                }
+
+
+                /*var trees = compilation.SyntaxTrees;
+
+                foreach (var tree in trees)
+                {
+                    
+                    TransformRewriter r = new TransformRewriter(tree);
+                }
+
+                foreach (var type in compilation.Assembly.GlobalNamespace.GetMembers())
+                {
+                    Console.WriteLine(type.Name);
+                }*/
+
+                using (var file = new FileStream("CompiledTarget.exe", FileMode.Create))
+                {
+                    var result = compilation.Emit(file);
+                }
+            }
+        }
+
+        private static CommonSyntaxNode ModifyTree(ISemanticModel model, CommonSyntaxNode commonSyntaxNode)
+        {
+            /*var candidates = commonSyntaxNode.DescendantNodesAndTokens().Where(x => ((SyntaxKind)x.Kind) == SyntaxKind.MethodDeclaration).ToList();
+
+            MethodDeclarationSyntax method = (MethodDeclarationSyntax) candidates[0];
+
+            foreach (var des in method.DescendantNodesAndTokens())
+            {
+                
+            }
+
+            var blah = method.DescendantNodesAndTokens().Where(y => ((SyntaxKind) y.Kind) == SyntaxKind.IdentifierToken).First();
+
+            var symbol = model.GetDeclaredSymbol(method);
+
+            var body = ((MethodDeclarationSyntax) candidates[0]).Body;*/
+
+            return commonSyntaxNode;
+        }
+    }
+
+    public class TransformRewriter : SyntaxRewriter
+    {
+        private readonly SyntaxTree tree;
+
+        public TransformRewriter()
+        {
+            this.tree = tree;
+        }
+
+        public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+        {
+            var methodDecl = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
+
+            List<StatementSyntax> newStatements = new List<StatementSyntax>();
+            var invoke = Syntax.ExpressionStatement(Syntax.InvocationExpression(Syntax.MemberAccessExpression(
+                              kind: SyntaxKind.MemberAccessExpression,
+                              expression: Syntax.IdentifierName("Console"),
+                              name: Syntax.IdentifierName("WriteLine"),
+                              operatorToken: Syntax.Token(SyntaxKind.DotToken)),
+            Syntax.ArgumentList(
+                arguments: Syntax.SeparatedList(
+                    Syntax.Argument(
+                        expression: Syntax.LiteralExpression(
+                            kind: SyntaxKind.StringLiteralExpression,
+                            token: Syntax.Literal("\"Hello world\"", "Hello world")
+                            )
+                        )
+                    )
+                )));
+
+
+            newStatements.Add(invoke);
+            newStatements.AddRange(methodDecl.Body.Statements);
+
+            return Syntax.MethodDeclaration(
+                methodDecl.AttributeLists,
+                methodDecl.Modifiers,
+                methodDecl.ReturnType,
+                methodDecl.ExplicitInterfaceSpecifier,
+                methodDecl.Identifier,
+                methodDecl.TypeParameterList,
+                methodDecl.ParameterList,
+                methodDecl.ConstraintClauses,
+                Syntax.Block(newStatements));
+        }
+
+    }
+}
