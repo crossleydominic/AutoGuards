@@ -64,7 +64,8 @@ namespace AutoGuards.CompileConsole
                     //Dont know of a nice way of getting the root node.
                     var rewritten = rewriter.Visit(model.SyntaxTree.GetRoot().AncestorsAndSelf().First());
 
-                    compilation = compilation.ReplaceSyntaxTree(document.GetSyntaxTree(), rewritten.SyntaxTree);
+                    //Hmm, rewrittern.SyntaxTree seems to be null, we'll have to convert to an intermediary string for now
+                    compilation = compilation.ReplaceSyntaxTree(document.GetSyntaxTree(), SyntaxTree.ParseText(rewritten.ToFullString()));
                 }
 
                 using (var file = new FileStream("CompiledTarget.exe", FileMode.Create))

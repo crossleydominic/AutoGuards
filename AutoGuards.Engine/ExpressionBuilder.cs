@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoGuards.Engine
 {
-    class ExpressionBuilder
+    public class ExpressionBuilder
     {
     }
 }

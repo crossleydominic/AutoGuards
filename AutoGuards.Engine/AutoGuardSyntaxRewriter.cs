@@ -43,38 +43,6 @@ namespace AutoGuards.Engine
                 methodDecl.ParameterList,
                 methodDecl.ConstraintClauses,
                 Syntax.Block(bodyStatements));
-
-            /*List<StatementSyntax> newStatements = new List<StatementSyntax>();
-            var invoke = Syntax.ExpressionStatement(Syntax.InvocationExpression(Syntax.MemberAccessExpression(
-                              kind: SyntaxKind.MemberAccessExpression,
-                              expression: Syntax.IdentifierName("Console"),
-                              name: Syntax.IdentifierName("WriteLine"),
-                              operatorToken: Syntax.Token(SyntaxKind.DotToken)),
-            Syntax.ArgumentList(
-                arguments: Syntax.SeparatedList(
-                    Syntax.Argument(
-                        expression: Syntax.LiteralExpression(
-                            kind: SyntaxKind.StringLiteralExpression,
-                            token: Syntax.Literal("\"Hello world\"", "Hello world")
-                            )
-                        )
-                    )
-                )));
-
-
-            newStatements.Add(invoke);
-            newStatements.AddRange(methodDecl.Body.Statements);
-
-            return Syntax.MethodDeclaration(
-                methodDecl.AttributeLists,
-                methodDecl.Modifiers,
-                methodDecl.ReturnType,
-                methodDecl.ExplicitInterfaceSpecifier,
-                methodDecl.Identifier,
-                methodDecl.TypeParameterList,
-                methodDecl.ParameterList,
-                methodDecl.ConstraintClauses,
-                Syntax.Block(newStatements));*/
         }
     }
 }
