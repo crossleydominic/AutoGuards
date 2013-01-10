@@ -49,4 +49,11 @@ consumer promises to call that method with non-null arguments.
 Once an interface method definitions had been annotated with the custom attributes then any implementors
 would get the guard clauses inserted into their implementations for free at compile time.
 
+What's missing
+==============
+
+A whole heap of stuff
+- How should type conversions be handled?
+- What happens for optional parameters?
+- How are overridden methods handled?
 
