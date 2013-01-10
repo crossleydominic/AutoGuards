@@ -36,5 +36,17 @@ You can instead write the method like this
 	
 The guard clauses are automatically emitted at compile time.
 
+History
+=======
+
+The inspiration for this library came after thinking about the idea of interfaces and contracts.
+An interface definition seems a little one-sided in that it only documents the obligations of the
+implementor.  It says nothing about the obligations of the consumer. For example,
+an interface may define a contract that says that implementors must provide an implementation for a
+particular method with three arguments.  The interface doesn't document that the contract will only be fullfilled if the 
+consumer promises to call that method with non-null arguments.
+
+Once an interface method definitions had been annotated with the custom attributes then any implementors
+would get the guard clauses inserted into their implementations for free.
 
 
