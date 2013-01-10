@@ -50,11 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoGuardSyntaxRewriter.cs" />
-    <Compile Include="Emitters\ContainsAtLeastEmitter.cs" />
     <Compile Include="Emitters\AutoGuardEmitter.cs" />
     <Compile Include="Emitters\EmitterResolver.cs" />
-    <Compile Include="Emitters\GreaterThanZeroEmitter.cs" />
-    <Compile Include="Emitters\NotEmptyEmitter.cs" />
     <Compile Include="Emitters\NotNullEmitter.cs" />
     <Compile Include="Emitters\NotNullOrWhitespaceEmitter.cs" />
     <Compile Include="ExpressionBuilder.cs" />

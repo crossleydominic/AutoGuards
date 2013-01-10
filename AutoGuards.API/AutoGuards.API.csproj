@@ -40,16 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoGuardAttribute.cs" />
-    <Compile Include="ContainsAtLeastAttribute.cs" />
-    <Compile Include="GreaterThanZeroAttribute.cs" />
-    <Compile Include="NotEmptyAttribute.cs" />
     <Compile Include="NotNullAttribute.cs" />
     <Compile Include="NotNullOrWhitespaceAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(TargetPath) $(SolutionDir)\AutoGuards.Target\Libs\</PostBuildEvent>
+    <PostBuildEvent>xcopy $(TargetPath) $(SolutionDir)AutoGuards.Target\Libs\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
