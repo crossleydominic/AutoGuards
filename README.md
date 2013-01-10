@@ -47,6 +47,6 @@ particular method with three arguments.  The interface doesn't document that the
 consumer promises to call that method with non-null arguments.
 
 Once an interface method definitions had been annotated with the custom attributes then any implementors
-would get the guard clauses inserted into their implementations for free.
+would get the guard clauses inserted into their implementations for free at compile time.
 
 

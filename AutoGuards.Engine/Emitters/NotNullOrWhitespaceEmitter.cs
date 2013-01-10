@@ -15,9 +15,82 @@ namespace AutoGuards.Engine.Emitters
             get { return typeof (NotNullOrWhitespaceAttribute); }
         }
 
-        public override StatementSyntax EmitGuard(Roslyn.Compilers.CSharp.TypeSymbol parameterType, string parameterName)
+        public override StatementSyntax EmitGuard(TypeSymbol parameterType, string parameterName)
         {
-            return Syntax.EmptyStatement();
+            var t = Syntax.SeparatedList<SyntaxNode>(
+            
+                Syntax.Argument(
+                    Syntax.LiteralExpression(
+                        SyntaxKind.StringLiteralExpression,
+                        Syntax.Literal(string.Format(@"""{0}"" cannot be null, empty or whitespace", parameterName), "errorMessage"))),
+                Syntax.Token(SyntaxKind.CommaToken),
+                Syntax.Argument(
+                    Syntax.LiteralExpression(
+                        SyntaxKind.StringLiteralExpression,
+                        Syntax.Literal(string.Format(@"""{0}""", parameterName), parameterName)))
+            );
+
+            /*
+             * 
+                        Syntax.ThrowStatement(
+                            Syntax.ObjectCreationExpression(
+                                Syntax.Token(Syntax.Whitespace(" "), SyntaxKind.NewKeyword, Syntax.Whitespace(" ")),
+                                Syntax.QualifiedName(Syntax.IdentifierName("global::System"), Syntax.IdentifierName("ArgumentException")), //TODO: Is there a better way of doing this?
+                                Syntax.ArgumentList(
+                                    Syntax.SeparatedList<ArgumentSyntax>(
+                                        Syntax.Argument(
+                                            Syntax.LiteralExpression(
+                                                SyntaxKind.StringLiteralExpression,
+                                                Syntax.Literal(string.Format(@"""{0} cannot be null, empty or whitespace""", parameterName), "errorMessage"))),
+                                        Syntax.Token(SyntaxKind.CommaToken),
+                                        Syntax.Argument(
+                                            Syntax.LiteralExpression(
+                                                SyntaxKind.StringLiteralExpression,
+                                                Syntax.Literal(string.Format(@"""{0}""", parameterName), parameterName))))),
+                                Syntax.InitializerExpression(SyntaxKind.ObjectInitializerExpression, new SeparatedSyntaxList<ExpressionSyntax>())))
+             */
+
+
+
+
+            
+
+
+            //TODO: Consider how to properly handle type conversions
+            
+            //TODO: Replace hardcoded names/symbols
+            StatementSyntax guardStatement = Syntax.IfStatement(
+                Syntax.InvocationExpression(
+                    Syntax.MemberAccessExpression(
+                    SyntaxKind.MemberAccessExpression,
+                    Syntax.IdentifierName("global::System.String"),
+                    name: Syntax.IdentifierName("IsNullOrWhiteSpace"),
+                    operatorToken: Syntax.Token(SyntaxKind.DotToken)),
+                            Syntax.ArgumentList(
+                                Syntax.SeparatedList(
+                                    Syntax.Argument(
+                                        Syntax.LiteralExpression(
+                                        SyntaxKind.StringLiteralExpression,
+                                        Syntax.Literal(parameterName, parameterName)))))),
+                    Syntax.Block(
+                        Syntax.ThrowStatement(
+                            Syntax.ObjectCreationExpression(
+                                Syntax.Token(Syntax.Whitespace(" "), SyntaxKind.NewKeyword, Syntax.Whitespace(" ")),
+                                Syntax.QualifiedName(Syntax.IdentifierName("global::System"), Syntax.IdentifierName("ArgumentException")), //TODO: Is there a better way of doing this?
+                                Syntax.ArgumentList(
+                                    Syntax.SeparatedList<ArgumentSyntax>(
+                                        Syntax.Argument(
+                                            Syntax.LiteralExpression(
+                                                SyntaxKind.StringLiteralExpression,
+                                                Syntax.Literal(string.Format(@"""{0} cannot be null, empty or whitespace""", parameterName), "errorMessage"))),
+                                        Syntax.Token(SyntaxKind.CommaToken),
+                                        Syntax.Argument(
+                                            Syntax.LiteralExpression(
+                                                SyntaxKind.StringLiteralExpression,
+                                                Syntax.Literal(string.Format(@"""{0}""", parameterName), parameterName))))),
+                                Syntax.InitializerExpression(SyntaxKind.ObjectInitializerExpression, new SeparatedSyntaxList<ExpressionSyntax>())))));
+
+            return guardStatement;
         }
     }
 }

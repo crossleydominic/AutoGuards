@@ -59,6 +59,8 @@ namespace AutoGuards.CompileConsole
                         }
                     }
                 }
+
+                Console.ReadLine();
             }
         }
     }
