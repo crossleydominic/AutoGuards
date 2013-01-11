@@ -34,5 +34,10 @@ namespace AutoGuards.Target
         {
             Console.WriteLine("IsDefined invoked successfully");
         }
+
+        public void Matches([Matches("abc")] string str)
+        {
+            Console.WriteLine("Matches invoked successfully");
+        }
     }
 }

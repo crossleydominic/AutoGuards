@@ -11,6 +11,6 @@ namespace AutoGuards.Engine.Emitters
     {
         public abstract Type EmitsFor { get; }
 
-        public abstract StatementSyntax EmitGuard(TypeSymbol parameterType, string parameterName);
+        public abstract StatementSyntax EmitGuard(AttributeData attribute, TypeSymbol parameterType, string parameterName);
     }
 }

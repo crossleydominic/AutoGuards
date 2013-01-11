@@ -15,7 +15,7 @@ namespace AutoGuards.Engine.Emitters
             get { return typeof (NotNullAttribute); }
         }
 
-        public override StatementSyntax EmitGuard(TypeSymbol parameterType, string parameterName)
+        public override StatementSyntax EmitGuard(AttributeData attribute, TypeSymbol parameterType, string parameterName)
         {
             //TODO: Replace hardcoded names/symbols
             //TODO: Refactor common expression building into builder

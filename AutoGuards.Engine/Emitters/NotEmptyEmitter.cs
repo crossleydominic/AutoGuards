@@ -13,7 +13,7 @@ namespace AutoGuards.Engine.Emitters
             get { return typeof (NotEmptyAttribute); }
         }
 
-        public override StatementSyntax EmitGuard(TypeSymbol parameterType, string parameterName)
+        public override StatementSyntax EmitGuard(AttributeData attribute, TypeSymbol parameterType, string parameterName)
         {
             //TODO: Modify to try cast to IList first, then try cast to IEnumerable
             //TODO: Consider how to properly handle type conversions

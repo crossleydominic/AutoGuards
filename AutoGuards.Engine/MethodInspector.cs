@@ -47,7 +47,7 @@ namespace AutoGuards.Engine
                             resolvedParameters.Add(guardedParameter);
                         }
                         
-                        guardedParameter.Emitters.Add(_emitterResolver.Resolve(attribute.AttributeClass.Name));
+                        guardedParameter.Emitters.Add(new EmitterAttributePair(_emitterResolver.Resolve(attribute.AttributeClass.Name), attribute));
                     }
                 } 
             }

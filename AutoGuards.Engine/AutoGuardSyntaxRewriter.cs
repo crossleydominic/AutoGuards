@@ -28,7 +28,7 @@ namespace AutoGuards.Engine
             
             List<GuardedParameter> guardsToEmit = _inspector.Inspect(_compilation, _semanticModel, methodDecl);
 
-            List<StatementSyntax> bodyStatements = guardsToEmit.SelectMany(g => g.Emitters.Select(y => y.EmitGuard(g.ParameterType, g.ParameterName))).ToList();
+            List<StatementSyntax> bodyStatements = guardsToEmit.SelectMany(g => g.Emitters.Select(y => y.Emitter.EmitGuard(y.Attribute, g.ParameterType, g.ParameterName))).ToList();
 
             //Add original body back in
             bodyStatements.AddRange(methodDecl.Body.Statements);
