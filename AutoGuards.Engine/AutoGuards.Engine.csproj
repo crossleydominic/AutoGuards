@@ -54,7 +54,6 @@
     <Compile Include="Emitters\EmitterResolver.cs" />
     <Compile Include="Emitters\NotNullEmitter.cs" />
     <Compile Include="Emitters\NotNullOrWhitespaceEmitter.cs" />
-    <Compile Include="ExpressionBuilder.cs" />
     <Compile Include="GuardedParameter.cs" />
     <Compile Include="MethodInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
