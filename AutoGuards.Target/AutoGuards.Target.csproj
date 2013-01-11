@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecoverableScope.cs" />
+    <Compile Include="ScenarioExecutionScope.cs" />
     <Compile Include="SimpleImplementation.cs" />
   </ItemGroup>
   <ItemGroup>

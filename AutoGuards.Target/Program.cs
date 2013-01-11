@@ -14,20 +14,20 @@ namespace AutoGuards.Target
         {
             SimpleImplementation impl = new SimpleImplementation();
 
-            RecoverableScope.Execute(() => { impl.UsesNotNull(null); });
-            RecoverableScope.Execute(() => { impl.UsesNotNull(new object()); });
+            ScenarioExecutionScope.Execute(() => { impl.UsesNotNull(null); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.UsesNotNull(new object()); }, false);
 
-            RecoverableScope.Execute(() => { impl.UsesNotNullOrWhitespace(null); });
-            RecoverableScope.Execute(() => { impl.UsesNotNullOrWhitespace(""); });
-            RecoverableScope.Execute(() => { impl.UsesNotNullOrWhitespace(" "); });
-            RecoverableScope.Execute(() => { impl.UsesNotNullOrWhitespace("abc"); });
+            ScenarioExecutionScope.Execute(() => { impl.UsesNotNullOrWhitespace(null); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.UsesNotNullOrWhitespace(""); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.UsesNotNullOrWhitespace(" "); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.UsesNotNullOrWhitespace("abc"); }, false);
 
-            RecoverableScope.Execute(() => { impl.UsesNotEmpty(new List<object>());});
-            RecoverableScope.Execute(() => { impl.UsesNotEmpty(new List<object>() { new object() }); });
+            ScenarioExecutionScope.Execute(() => { impl.UsesNotEmpty(new List<object>()); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.UsesNotEmpty(new List<object>() { new object() }); }, false);
 
-            RecoverableScope.Execute(() => { impl.NotNullAndNotEmpty(null); });
-            RecoverableScope.Execute(() => { impl.NotNullAndNotEmpty(new List<object>()); });
-            RecoverableScope.Execute(() => { impl.NotNullAndNotEmpty(new List<object>() { new object() }); });
+            ScenarioExecutionScope.Execute(() => { impl.NotNullAndNotEmpty(null); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.NotNullAndNotEmpty(new List<object>()); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.NotNullAndNotEmpty(new List<object>() { new object() }); }, false);
 
             Console.WriteLine("Finished... ");
             Console.ReadLine();
