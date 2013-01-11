@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,11 @@ namespace AutoGuards.Target
     {
         private static void Main(string[] args)
         {
-            try{ DoSomething(null, null); }catch (Exception e){ Console.WriteLine(e.Message); }
+            try{ DoSomething(null, null, null); }catch (Exception e){ Console.WriteLine(e.Message); }
 
-            try{ DoSomething(new StringBuilder(""), string.Empty); }catch (Exception e){ Console.WriteLine(e.Message); }
+            try{ DoSomething(new StringBuilder(""), string.Empty, null); }catch (Exception e){ Console.WriteLine(e.Message); }
 
-            try { DoSomething(new StringBuilder(""), "someString"); } catch (Exception e) { Console.WriteLine(e.Message); }
+            try { DoSomething(new StringBuilder(""), "someString", new List<string>()); } catch (Exception e) { Console.WriteLine(e.Message); }
 
             Console.WriteLine("Program ran");
             Console.ReadLine();
@@ -23,9 +24,10 @@ namespace AutoGuards.Target
 
         private static void DoSomething(
             [NotNull] StringBuilder obj, 
-            [NotNullOrWhitespace]string str)
+            [NotNullOrWhitespace]string str,
+            [NotEmpty] List<string> list)
         {
-         
+            var blah = ((IList)list).Count;
             Console.WriteLine("DoSomething invoked");
         }
     }
