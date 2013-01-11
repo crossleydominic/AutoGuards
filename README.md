@@ -56,4 +56,5 @@ A whole heap of stuff
 - How should type conversions be handled?
 - What happens for optional parameters?
 - How are overridden methods handled?
+- How are errors handled when using an AutoGuard on a mismatched type?
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,11 @@ namespace AutoGuards.Target
         public void NotNullAndNotEmpty([NotNull] [NotEmpty] List<object> objs)
         {
             Console.WriteLine("SingleParamMultipleAttributes invoked successfully");
+        }
+
+        public void IsDefined([IsDefined] FileMode filemode)
+        {
+            Console.WriteLine("IsDefined invoked successfully");
         }
     }
 }

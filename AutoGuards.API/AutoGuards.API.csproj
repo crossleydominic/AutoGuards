@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoGuardAttribute.cs" />
+    <Compile Include="IsDefinedAttribute.cs" />
+    <Compile Include="MatchesAttribute.cs" />
     <Compile Include="NotEmptyAttribute.cs" />
     <Compile Include="NotNullAttribute.cs" />
     <Compile Include="NotNullOrWhitespaceAttribute.cs" />

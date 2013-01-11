@@ -52,6 +52,8 @@
     <Compile Include="AutoGuardSyntaxRewriter.cs" />
     <Compile Include="Emitters\AutoGuardEmitter.cs" />
     <Compile Include="Emitters\EmitterResolver.cs" />
+    <Compile Include="Emitters\IsDefinedEmitter.cs" />
+    <Compile Include="Emitters\MatchesEmitter.cs" />
     <Compile Include="Emitters\NotEmptyEmitter.cs" />
     <Compile Include="Emitters\NotNullEmitter.cs" />
     <Compile Include="Emitters\NotNullOrWhitespaceEmitter.cs" />

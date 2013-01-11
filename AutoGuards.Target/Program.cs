@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,9 @@ namespace AutoGuards.Target
             ScenarioExecutionScope.Execute(() => { impl.NotNullAndNotEmpty(null); }, true);
             ScenarioExecutionScope.Execute(() => { impl.NotNullAndNotEmpty(new List<object>()); }, true);
             ScenarioExecutionScope.Execute(() => { impl.NotNullAndNotEmpty(new List<object>() { new object() }); }, false);
+
+            ScenarioExecutionScope.Execute(() => { impl.IsDefined((FileMode)999); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.IsDefined(FileMode.Append); }, false);
 
             Console.WriteLine("Finished... ");
             Console.ReadLine();
