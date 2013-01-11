@@ -1,7 +1,7 @@
 What are AutoGuards
 ===================
 
-AutoGuards is a experimental library built on top of the C# compiler-as-a-service (Roslyn).
+AutoGuards is a experimental library built on top of the C# compiler-as-a-service ([Roslyn](http://msdn.microsoft.com/en-gb/roslyn)).
 It allows a method's parameters to be marked up with custom attributes which will 
 automatically emit guard clauses at compile time.
 
