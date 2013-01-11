@@ -12,23 +12,25 @@ namespace AutoGuards.Target
     {
         private static void Main(string[] args)
         {
-            try{ DoSomething(null, null, null); }catch (Exception e){ Console.WriteLine(e.Message); }
+            SimpleImplementation impl = new SimpleImplementation();
 
-            try{ DoSomething(new StringBuilder(""), string.Empty, null); }catch (Exception e){ Console.WriteLine(e.Message); }
+            RecoverableScope.Execute(() => { impl.UsesNotNull(null); });
+            RecoverableScope.Execute(() => { impl.UsesNotNull(new object()); });
 
-            try { DoSomething(new StringBuilder(""), "someString", new List<string>()); } catch (Exception e) { Console.WriteLine(e.Message); }
+            RecoverableScope.Execute(() => { impl.UsesNotNullOrWhitespace(null); });
+            RecoverableScope.Execute(() => { impl.UsesNotNullOrWhitespace(""); });
+            RecoverableScope.Execute(() => { impl.UsesNotNullOrWhitespace(" "); });
+            RecoverableScope.Execute(() => { impl.UsesNotNullOrWhitespace("abc"); });
 
-            Console.WriteLine("Program ran");
+            RecoverableScope.Execute(() => { impl.UsesNotEmpty(new List<object>());});
+            RecoverableScope.Execute(() => { impl.UsesNotEmpty(new List<object>() { new object() }); });
+
+            RecoverableScope.Execute(() => { impl.NotNullAndNotEmpty(null); });
+            RecoverableScope.Execute(() => { impl.NotNullAndNotEmpty(new List<object>()); });
+            RecoverableScope.Execute(() => { impl.NotNullAndNotEmpty(new List<object>() { new object() }); });
+
+            Console.WriteLine("Finished... ");
             Console.ReadLine();
-        }
-
-        private static void DoSomething(
-            [NotNull] StringBuilder obj, 
-            [NotNullOrWhitespace]string str,
-            [NotEmpty] List<string> list)
-        {
-            var blah = ((IList)list).Count;
-            Console.WriteLine("DoSomething invoked");
         }
     }
 }

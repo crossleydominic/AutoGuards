@@ -47,7 +47,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(TargetPath) $(SolutionDir)AutoGuards.Target\Libs\</PostBuildEvent>
+    <PostBuildEvent>del /F /Q $(SolutionDir)AutoGuards.Target\Libs\AutoGuards.API.dll
+xcopy $(TargetPath) $(SolutionDir)AutoGuards.Target\Libs\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -10,6 +10,7 @@ using Roslyn.Compilers.CSharp;
 using Roslyn.Compilers.Common;
 using Roslyn.Services;
 using Roslyn.Services.CSharp;
+using System.Diagnostics;
 
 namespace AutoGuards.CompileConsole
 {
@@ -38,25 +39,38 @@ namespace AutoGuards.CompileConsole
                     compilation = compilation.ReplaceSyntaxTree(document.GetSyntaxTree(), SyntaxTree.ParseText(rewritten.ToFullString()));
                 }
 
-                using (var file = new FileStream("CompiledTarget.exe", FileMode.Create))
+                CommonEmitResult result;
+                string outputFile = "CompiledTarget.exe";
+                using (var file = new FileStream(outputFile, FileMode.Create))
                 {
                     //TODO: Add command line parameter for output location
-                    var result = compilation.Emit(file);
+                    result = compilation.Emit(file);
+                }
 
-                    if (result.Success)
-                    {
-                        Console.WriteLine("Compilation succeeded");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Compilation failed");
+                if (result.Success)
+                {
+                    Console.WriteLine("Compilation succeeded");
+                    Console.WriteLine("Executing Target...");
 
-                        foreach (Diagnostic diagnostic in result.Diagnostics)
-                        {
-                            Console.WriteLine(string.Empty);
-                            Console.WriteLine(diagnostic.Info);
-                            Console.WriteLine(diagnostic.Location);
-                        }
+                    Process p = new Process();
+                    p.StartInfo = new ProcessStartInfo()
+                    {
+                        FileName = outputFile
+                    };
+                    p.Start();
+                    p.WaitForExit();
+
+                    Console.WriteLine("Target exited");
+                }
+                else
+                {
+                    Console.WriteLine("Compilation failed");
+
+                    foreach (Diagnostic diagnostic in result.Diagnostics)
+                    {
+                        Console.WriteLine(string.Empty);
+                        Console.WriteLine(diagnostic.Info);
+                        Console.WriteLine(diagnostic.Location);
                     }
                 }
 
