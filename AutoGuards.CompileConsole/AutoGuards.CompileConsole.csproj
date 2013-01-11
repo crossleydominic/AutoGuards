@@ -50,9 +50,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TextFile1.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AutoGuards.API\AutoGuards.API.csproj">
       <Project>{045c02a2-b5fd-4abe-bd9c-a0e8871fe734}</Project>
       <Name>AutoGuards.API</Name>
