@@ -40,7 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoGuardAttribute.cs" />
+    <Compile Include="GreaterThanAttribute.cs" />
     <Compile Include="IsDefinedAttribute.cs" />
+    <Compile Include="LessThanAttribute.cs" />
     <Compile Include="MatchesAttribute.cs" />
     <Compile Include="NotEmptyAttribute.cs" />
     <Compile Include="NotNullAttribute.cs" />

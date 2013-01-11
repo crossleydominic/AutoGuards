@@ -33,6 +33,9 @@ namespace AutoGuards.Target
             ScenarioExecutionScope.Execute(() => { impl.IsDefined((FileMode)999); }, true);
             ScenarioExecutionScope.Execute(() => { impl.IsDefined(FileMode.Append); }, false);
 
+            ScenarioExecutionScope.Execute(() => { impl.Matches("def"); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.Matches("abc"); }, false);
+
             Console.WriteLine("Finished... ");
             Console.ReadLine();
         }
