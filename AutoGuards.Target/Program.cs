@@ -36,6 +36,12 @@ namespace AutoGuards.Target
             ScenarioExecutionScope.Execute(() => { impl.Matches("def"); }, true);
             ScenarioExecutionScope.Execute(() => { impl.Matches("abc"); }, false);
 
+            ScenarioExecutionScope.Execute(() => { impl.LessThan(15); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.LessThan(6); }, false);
+
+            ScenarioExecutionScope.Execute(() => { impl.GreaterThan(6); }, true);
+            ScenarioExecutionScope.Execute(() => { impl.GreaterThan(15); }, false);
+
             Console.WriteLine("Finished... ");
             Console.ReadLine();
         }

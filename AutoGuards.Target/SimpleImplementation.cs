@@ -39,5 +39,15 @@ namespace AutoGuards.Target
         {
             Console.WriteLine("Matches invoked successfully");
         }
+
+        public void LessThan([LessThan(10)] int num)
+        {
+            Console.WriteLine("LessThan invoked successfully");
+        }
+
+        public void GreaterThan([GreaterThan(10)] int num)
+        {
+            Console.WriteLine("GreaterThan invoked successfully");
+        }
     }
 }

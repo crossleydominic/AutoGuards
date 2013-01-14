@@ -8,5 +8,11 @@ namespace AutoGuards.API
 {
     public class GreaterThanAttribute : AutoGuardAttribute
     {
+        private object _value;
+
+        public GreaterThanAttribute(object value)
+        {
+            _value = value;
+        }
     }
 }

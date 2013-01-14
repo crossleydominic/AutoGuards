@@ -8,5 +8,11 @@ namespace AutoGuards.API
 {
     public class LessThanAttribute : AutoGuardAttribute
     {
+        private object _value;
+
+        public LessThanAttribute(object value)
+        {
+            _value = value;
+        }
     }
 }

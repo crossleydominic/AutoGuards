@@ -17,7 +17,46 @@ namespace AutoGuards.Engine.Emitters
 
         public override StatementSyntax EmitGuard(AttributeData attribute, TypeSymbol parameterType, string parameterName)
         {
-            throw new NotImplementedException();
+            string comparisonValue = attribute.ConstructorArguments.First().Value.ToString();
+
+            StatementSyntax guardStatement = Syntax.IfStatement(
+                Syntax.BinaryExpression(
+                SyntaxKind.LessThanOrEqualExpression,
+                Syntax.InvocationExpression(
+               Syntax.MemberAccessExpression(
+                  SyntaxKind.MemberAccessExpression,
+                  Syntax.ParenthesizedExpression(
+                       Syntax.CastExpression(
+                           Syntax.IdentifierName("global::System.IComparable"),
+                           Syntax.IdentifierName(parameterName))),
+                  name: Syntax.IdentifierName("CompareTo"),
+                  operatorToken: Syntax.Token(SyntaxKind.DotToken)),
+                  Syntax.ArgumentList(
+                      Syntax.SeparatedList(
+                          Syntax.Argument(
+                              Syntax.LiteralExpression(
+                              SyntaxKind.StringLiteralExpression,
+                              Syntax.Literal(comparisonValue, "comparisonValue")))))),
+                Syntax.IdentifierName("0")),
+                Syntax.Block(
+                Syntax.ThrowStatement(
+                Syntax.ObjectCreationExpression(
+              Syntax.Token(Syntax.Whitespace(" "), SyntaxKind.NewKeyword, Syntax.Whitespace(" ")),
+              Syntax.QualifiedName(Syntax.IdentifierName("global::System"), Syntax.IdentifierName("ArgumentException")), //TODO: Is there a better way of doing this?
+              Syntax.ArgumentList(
+                  Syntax.SeparatedList<ArgumentSyntax>(
+                      Syntax.Argument(
+                          Syntax.LiteralExpression(
+                              SyntaxKind.StringLiteralExpression,
+                              Syntax.Literal(string.Format(@"""{0} is not greater than '" + comparisonValue + @"'.""", parameterName), "errorMessage"))),
+                      Syntax.Token(SyntaxKind.CommaToken),
+                      Syntax.Argument(
+                          Syntax.LiteralExpression(
+                              SyntaxKind.StringLiteralExpression,
+                              Syntax.Literal(string.Format(@"""{0}""", parameterName), parameterName))))),
+              Syntax.InitializerExpression(SyntaxKind.ObjectInitializerExpression, new SeparatedSyntaxList<ExpressionSyntax>())))));
+
+            return guardStatement;
         }
     }
 }
