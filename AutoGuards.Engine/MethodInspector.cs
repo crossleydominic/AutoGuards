@@ -19,14 +19,12 @@ namespace AutoGuards.Engine
             _emitterResolver = new EmitterResolver();
         }
 
-        public List<GuardedParameter> Inspect(CommonCompilation compilation, SemanticModel semanticModel, MethodDeclarationSyntax method)
+        public List<GuardedParameter> Inspect(MethodDeclarationSyntax method, MethodSymbol methodSymbol)
         {
             List<GuardedParameter> resolvedParameters = new List<GuardedParameter>();
 
-            var methodSymbol = semanticModel.GetDeclaredSymbol(method);
-
             //TODO: Need to do things in here like resolve base class/overriden/interface implemented methods
-
+            
             foreach (var parameter in methodSymbol.Parameters)
             {
                 GuardedParameter guardedParameter = null;

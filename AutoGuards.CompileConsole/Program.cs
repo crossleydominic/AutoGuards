@@ -30,7 +30,7 @@ namespace AutoGuards.CompileConsole
                 {
                     SemanticModel model = (SemanticModel) document.GetSemanticModel();
 
-                    var rewriter = new AutoGuardSyntaxRewriter(compilation, model);
+                    var rewriter = new AutoGuardSyntaxRewriter(model);
 
                     //Dont know of a nice way of getting the root node.
                     var rewritten = rewriter.Visit(model.SyntaxTree.GetRoot().AncestorsAndSelf().First());

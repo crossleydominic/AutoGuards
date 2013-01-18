@@ -12,21 +12,26 @@ namespace AutoGuards.Engine
     public class AutoGuardSyntaxRewriter : SyntaxRewriter
     {
         private MethodInspector _inspector;
-        private CommonCompilation _compilation;
         private SemanticModel _semanticModel;
 
-        public AutoGuardSyntaxRewriter(CommonCompilation compilation, SemanticModel semanticModel)
+        public AutoGuardSyntaxRewriter(SemanticModel semanticModel)
         {
             _inspector = new MethodInspector();
-            _compilation = compilation;
             _semanticModel = semanticModel;
         }
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
             var methodDecl = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
+
+            var methodSymbol = _semanticModel.GetDeclaredSymbol(methodDecl);
             
-            List<GuardedParameter> guardsToEmit = _inspector.Inspect(_compilation, _semanticModel, methodDecl);
+            if (methodSymbol.IsAbstract)
+            {
+                return methodDecl;
+            }
+
+            List<GuardedParameter> guardsToEmit = _inspector.Inspect(methodDecl, methodSymbol);
 
             List<StatementSyntax> bodyStatements = guardsToEmit.SelectMany(g => g.Emitters.Select(y => y.Emitter.EmitGuard(y.Attribute, g.ParameterType, g.ParameterName))).ToList();
 
