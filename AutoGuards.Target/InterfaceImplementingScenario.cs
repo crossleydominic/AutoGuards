@@ -7,7 +7,7 @@ using AutoGuards.API;
 
 namespace AutoGuards.Target
 {
-    public interface IInterfaceA
+    /*public interface IInterfaceA
     {
         void InterfaceAMethod([NotNull] string str);
 
@@ -28,13 +28,15 @@ namespace AutoGuards.Target
         {
         }
 
-        public void ExplicitlyImplmentedMethod()
-        {
-        }
-
         public void SharedMethod(int i)
         {
         }
+
+        void IInterfaceA.ExplicitlyImplmentedMethod()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 
     public class ImplemetingBothInterfaces : IInterfaceA, IInterfaceB
@@ -47,9 +49,11 @@ namespace AutoGuards.Target
         {
         }
 
-        public void ExplicitlyImplmentedMethod()
+        void IInterfaceA.ExplicitlyImplmentedMethod()
         {
+            throw new NotImplementedException();
         }
-    }
+
+    }*/
 
 }

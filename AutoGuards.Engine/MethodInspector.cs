@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoGuards.API;
 using AutoGuards.Engine.Emitters;
+using Roslyn.Compilers;
 using Roslyn.Compilers.CSharp;
 using Roslyn.Compilers.Common;
 
@@ -24,7 +25,19 @@ namespace AutoGuards.Engine
             List<GuardedParameter> resolvedParameters = new List<GuardedParameter>();
 
             //TODO: Need to do things in here like resolve base class/overriden/interface implemented methods
-            
+
+            var constructedFrom = methodSymbol.ConstructedFrom;
+            bool iso = methodSymbol.IsOverride;
+
+            NamedTypeSymbol classSymbol = methodSymbol.ContainingType;
+            var explicitinterfaces = methodSymbol.ExplicitInterfaceImplementations;
+            ReadOnlyArray<NamedTypeSymbol> interfaces = classSymbol.Interfaces;
+            var overriddenmethod = methodSymbol.OverriddenMethod;
+
+
+
+
+
             foreach (var parameter in methodSymbol.Parameters)
             {
                 GuardedParameter guardedParameter = null;

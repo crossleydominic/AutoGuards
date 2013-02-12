@@ -13,6 +13,7 @@ namespace AutoGuards.Target
     {
         private static void Main(string[] args)
         {
+            //Simple scenario
             SimpleImplementation impl = new SimpleImplementation();
 
             ScenarioExecutionScope.Execute(() => { impl.UsesNotNull(null); }, true);
@@ -41,6 +42,20 @@ namespace AutoGuards.Target
 
             ScenarioExecutionScope.Execute(() => { impl.GreaterThan(6); }, true);
             ScenarioExecutionScope.Execute(() => { impl.GreaterThan(15); }, false);
+
+            //Overriding scenario
+            OverridingImplementationDerived implDerived = new OverridingImplementationDerived();
+            ScenarioExecutionScope.Execute(() => { implDerived.AbstractMethod(null); }, true);
+            ScenarioExecutionScope.Execute(() => { implDerived.AbstractMethod(string.Empty); }, true);
+            ScenarioExecutionScope.Execute(() => { implDerived.AbstractMethod(" "); }, true);
+            ScenarioExecutionScope.Execute(() => { implDerived.AbstractMethod("someVal"); }, false);
+
+            ScenarioExecutionScope.Execute(() => { implDerived.VirtualMethod(21);}, true);
+            ScenarioExecutionScope.Execute(() => { implDerived.VirtualMethod(4); }, true);
+            ScenarioExecutionScope.Execute(() => { implDerived.VirtualMethod(10); }, false);
+
+            ScenarioExecutionScope.Execute(() => { implDerived.MethodToBeHidden("A"); }, true);
+            ScenarioExecutionScope.Execute(() => { implDerived.MethodToBeHidden("5"); }, false);
 
             Console.WriteLine("Finished... ");
             Console.ReadLine();

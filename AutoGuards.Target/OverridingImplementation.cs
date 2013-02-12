@@ -20,17 +20,17 @@ namespace AutoGuards.Target
     {
         public override void AbstractMethod([NotNullOrWhitespace] string str)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("AbstractMethod invoked successfully");
         }
 
         public override void VirtualMethod([GreaterThan(5)]int i)
         {
-            base.VirtualMethod(i);
+            Console.WriteLine("VirtualMethod invoked successfully");
         }
 
         public new void MethodToBeHidden([Matches("[0-9]")] string str)
         {
-            
+            Console.WriteLine("MethodToBeHidden invoked successfully");
         }
     }
 }
