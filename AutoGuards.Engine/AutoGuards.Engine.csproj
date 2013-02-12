@@ -59,6 +59,7 @@
     <Compile Include="Emitters\NotEmptyEmitter.cs" />
     <Compile Include="Emitters\NotNullEmitter.cs" />
     <Compile Include="Emitters\NotNullOrWhitespaceEmitter.cs" />
+    <Compile Include="Emitters\SimpleSyntaxWriter.cs" />
     <Compile Include="GuardedParameter.cs" />
     <Compile Include="MethodInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

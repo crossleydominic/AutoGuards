@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AutoGuards.API;
 using Roslyn.Compilers.CSharp;
@@ -32,22 +33,7 @@ namespace AutoGuards.Engine.Emitters
                     operatorToken: Syntax.Token(SyntaxKind.DotToken)),
                             Syntax.IdentifierName("0")),
                     Syntax.Block(
-                        Syntax.ThrowStatement(
-                            Syntax.ObjectCreationExpression(
-                                Syntax.Token(Syntax.Whitespace(" "), SyntaxKind.NewKeyword, Syntax.Whitespace(" ")),
-                                Syntax.QualifiedName(Syntax.IdentifierName("global::System"), Syntax.IdentifierName("ArgumentException")), //TODO: Is there a better way of doing this?
-                                Syntax.ArgumentList(
-                                    Syntax.SeparatedList<ArgumentSyntax>(
-                                        Syntax.Argument(
-                                            Syntax.LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Syntax.Literal(string.Format(@"""{0} cannot be empty""", parameterName), "errorMessage"))),
-                                        Syntax.Token(SyntaxKind.CommaToken),
-                                        Syntax.Argument(
-                                            Syntax.LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Syntax.Literal(string.Format(@"""{0}""", parameterName), parameterName))))),
-                                Syntax.InitializerExpression(SyntaxKind.ObjectInitializerExpression, new SeparatedSyntaxList<ExpressionSyntax>())))));
+                        SimpleSyntaxWriter.GenerateThrowStatement(typeof(ArgumentException), parameterName, string.Format(@"""{0} cannot be empty""", parameterName))));
 
             return guardStatement;
         }

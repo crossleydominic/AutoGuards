@@ -25,15 +25,7 @@ namespace AutoGuards.Engine.Emitters
                     Syntax.IdentifierName(parameterName),
                     Syntax.IdentifierName("null")),
                     Syntax.Block( 
-                        Syntax.ThrowStatement(
-                            Syntax.ObjectCreationExpression(
-                                Syntax.Token(Syntax.Whitespace(" "), SyntaxKind.NewKeyword, Syntax.Whitespace(" ")),
-                                Syntax.QualifiedName(Syntax.IdentifierName("global::System"), Syntax.IdentifierName("ArgumentNullException")), //TODO: Is there a better way of doing this?
-                                Syntax.ArgumentList(Syntax.SeparatedList(Syntax.Argument(
-                                    Syntax.LiteralExpression(
-                                        SyntaxKind.StringLiteralExpression,
-                                        Syntax.Literal(string.Format(@"""{0}""", parameterName), parameterName))))), 
-                                Syntax.InitializerExpression(SyntaxKind.ObjectInitializerExpression, new SeparatedSyntaxList<ExpressionSyntax>())))));
+                        SimpleSyntaxWriter.GenerateThrowStatement(typeof(ArgumentNullException), parameterName)));
 
             return guardStatement;
         }

@@ -41,22 +41,7 @@ namespace AutoGuards.Engine.Emitters
                                     Syntax.Literal(parameterName, parameterName)))))),
                     Syntax.IdentifierName("false")),
                     Syntax.Block(
-                        Syntax.ThrowStatement(
-                            Syntax.ObjectCreationExpression(
-                                Syntax.Token(Syntax.Whitespace(" "), SyntaxKind.NewKeyword, Syntax.Whitespace(" ")),
-                                Syntax.QualifiedName(Syntax.IdentifierName("global::System"), Syntax.IdentifierName("ArgumentException")), //TODO: Is there a better way of doing this?
-                                Syntax.ArgumentList(
-                                    Syntax.SeparatedList<ArgumentSyntax>(
-                                        Syntax.Argument(
-                                            Syntax.LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Syntax.Literal(string.Format(@"""{0} value is not defined for the enum type.""", parameterName), "errorMessage"))),
-                                        Syntax.Token(SyntaxKind.CommaToken),
-                                        Syntax.Argument(
-                                            Syntax.LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Syntax.Literal(string.Format(@"""{0}""", parameterName), parameterName))))),
-                                Syntax.InitializerExpression(SyntaxKind.ObjectInitializerExpression, new SeparatedSyntaxList<ExpressionSyntax>())))));
+                        SimpleSyntaxWriter.GenerateThrowStatement(typeof(ArgumentException), parameterName, string.Format(@"""{0} value is not defined for the enum type.""", parameterName))));
             
             return guardStatement;
         }
