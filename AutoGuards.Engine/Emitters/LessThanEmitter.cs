@@ -24,7 +24,7 @@ namespace AutoGuards.Engine.Emitters
                 Syntax.BinaryExpression(
                     SyntaxKind.GreaterThanOrEqualExpression,
                     SimpleSyntaxWriter.InvokeMethodWithCast(
-                        (IComparable x)=>x.CompareTo(It.Is<object>()), 
+                        (IComparable x)=>x.CompareTo(Fake.Object), 
                         parameterName,
                         SimpleSyntaxWriter.ArgumentFromLiteral(comparisonValue, false)),
                 Syntax.IdentifierName("0")),

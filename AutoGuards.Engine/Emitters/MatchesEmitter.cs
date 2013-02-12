@@ -26,7 +26,7 @@ namespace AutoGuards.Engine.Emitters
                 Syntax.BinaryExpression(
                     SyntaxKind.EqualsExpression,
                     SimpleSyntaxWriter.InvokeStaticMethod(
-                    () => Regex.IsMatch(It.Is<string>(), It.Is<string>()),
+                    () => Regex.IsMatch(Fake.String, Fake.String),
                         SimpleSyntaxWriter.ArgumentFromIdentifier(parameterName), 
                         SimpleSyntaxWriter.ArgumentFromLiteral(regexMatchString, true)
                     ), 

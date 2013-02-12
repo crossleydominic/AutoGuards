@@ -23,7 +23,7 @@ namespace AutoGuards.Engine.Emitters
                 Syntax.BinaryExpression(
                     SyntaxKind.EqualsExpression,
                     SimpleSyntaxWriter.InvokeStaticMethod(
-                        () => Enum.IsDefined(It.Is<Type>(), It.Is<object>()),
+                        () => Enum.IsDefined(Fake.Any<Type>(), Fake.Object),
                         SimpleSyntaxWriter.ArgumentFromTypeof(parameterType.Name),
                         SimpleSyntaxWriter.ArgumentFromLiteral(parameterName, false)
                     ),

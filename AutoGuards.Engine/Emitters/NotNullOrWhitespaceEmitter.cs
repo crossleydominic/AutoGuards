@@ -21,7 +21,7 @@ namespace AutoGuards.Engine.Emitters
             //TODO: Consider how to properly handle type conversions
             StatementSyntax guardStatement = Syntax.IfStatement(
                 SimpleSyntaxWriter.InvokeStaticMethod(
-                    ()=>string.IsNullOrWhiteSpace(It.Is<string>()),
+                    ()=>string.IsNullOrWhiteSpace(Fake.String),
                     SimpleSyntaxWriter.ArgumentFromIdentifier(parameterName)),
                     Syntax.Block(
                         SimpleSyntaxWriter.GenerateThrowStatement(typeof(ArgumentException), parameterName, string.Format(@"""{0} cannot be null, empty or whitespace""", parameterName))));

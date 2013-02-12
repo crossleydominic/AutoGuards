@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AutoGuards.Engine.Expressions;
+using AutoGuards.Engine.Extensions;
 using Roslyn.Compilers.CSharp;
 
 namespace AutoGuards.Engine.Emitters
@@ -53,7 +54,7 @@ namespace AutoGuards.Engine.Emitters
 
             return Syntax.MemberAccessExpression(
                         SyntaxKind.MemberAccessExpression,
-                        Syntax.IdentifierName("global::" + mi.DeclaringType.FullName),
+                        Syntax.IdentifierName(mi.DeclaringType.GetGlobalName()),
                         name: Syntax.IdentifierName(mi.MethodName),
                         operatorToken: Syntax.Token(SyntaxKind.DotToken));
         }
@@ -66,7 +67,7 @@ namespace AutoGuards.Engine.Emitters
                         SyntaxKind.MemberAccessExpression,
                         Syntax.ParenthesizedExpression(
                             Syntax.CastExpression(
-                                Syntax.IdentifierName("global::" + mi.DeclaringType.FullName),
+                                Syntax.IdentifierName(mi.DeclaringType.GetGlobalName()),
                                 Syntax.IdentifierName(parameterName))),
                         name: Syntax.IdentifierName(mi.MethodName),
                         operatorToken: Syntax.Token(SyntaxKind.DotToken));
@@ -111,10 +112,9 @@ namespace AutoGuards.Engine.Emitters
             return Syntax.ThrowStatement(
                 Syntax.ObjectCreationExpression(
                     Syntax.Token(Syntax.Whitespace(" "), SyntaxKind.NewKeyword, Syntax.Whitespace(" ")),
-                    Syntax.IdentifierName("global::" + exceptionType.FullName), 
+                    Syntax.IdentifierName(exceptionType.GetGlobalName()), 
                     argumentList,
                     Syntax.InitializerExpression(SyntaxKind.ObjectInitializerExpression, new SeparatedSyntaxList<ExpressionSyntax>())));
         }
-
     }
 }
