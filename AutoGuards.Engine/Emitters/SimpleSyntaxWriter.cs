@@ -12,20 +12,24 @@ namespace AutoGuards.Engine.Emitters
 {
     public static class SimpleSyntaxWriter
     {
+        public static ArgumentListSyntax MakeArgumentList(params ArgumentSyntax[] arguments)
+        {
+            return Syntax.ArgumentList(
+                Syntax.SeparatedList(arguments, Enumerable.Repeat(Syntax.Token(SyntaxKind.CommaToken), arguments.Length - 1));
+        }
+
         public static InvocationExpressionSyntax InvokeMethodWithCast<TIn, TOut>(Expression<Func<TIn, TOut>> exp, string parameterName, params ArgumentSyntax[] arguments)
         {
             return Syntax.InvocationExpression(
                         AccessMemberWithCast(exp, parameterName),
-                        Syntax.ArgumentList(
-                            Syntax.SeparatedList<ArgumentSyntax>(arguments, Enumerable.Repeat(Syntax.Token(SyntaxKind.CommaToken), arguments.Length - 1))));
+                        MakeArgumentList(arguments));
         }
 
         public static InvocationExpressionSyntax InvokeStaticMethod<T>(Expression<Func<T>> exp, params ArgumentSyntax[] arguments)
         {
             return Syntax.InvocationExpression(
                         AccessStaticMember(exp),
-                        Syntax.ArgumentList(
-                            Syntax.SeparatedList<ArgumentSyntax>(arguments, Enumerable.Repeat(Syntax.Token(SyntaxKind.CommaToken), arguments.Length - 1))));
+                        MakeArgumentList(arguments));
         }
 
         public static ArgumentSyntax ArgumentFromTypeof(string typeName)
