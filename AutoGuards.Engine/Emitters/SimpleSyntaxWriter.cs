@@ -1,14 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using AutoGuards.Engine.Expressions;
 using Roslyn.Compilers.CSharp;
 
 namespace AutoGuards.Engine.Emitters
 {
     public static class SimpleSyntaxWriter
     {
+        public static MemberAccessExpressionSyntax AccessStaticMember<T>(Expression<Func<T>> exp)
+        {
+            Invocation mi = ExpressionInspector.GetInvocation(exp.Body);
+
+            return Syntax.MemberAccessExpression(
+                        SyntaxKind.MemberAccessExpression,
+                        Syntax.IdentifierName("global::" + mi.DeclaringType.FullName),
+                        name: Syntax.IdentifierName(mi.MethodName),
+                        operatorToken: Syntax.Token(SyntaxKind.DotToken));
+        }
+
+        public static MemberAccessExpressionSyntax AccessMemberWithCast<TIn, TOut>(Expression<Func<TIn, TOut>> exp, string parameterName)
+        {
+            Invocation mi = ExpressionInspector.GetInvocation(exp.Body);
+
+            return Syntax.MemberAccessExpression(
+                        SyntaxKind.MemberAccessExpression,
+                        Syntax.ParenthesizedExpression(
+                            Syntax.CastExpression(
+                                Syntax.IdentifierName("global::" + mi.DeclaringType.FullName),
+                                Syntax.IdentifierName(parameterName))),
+                        name: Syntax.IdentifierName(mi.MethodName),
+                        operatorToken: Syntax.Token(SyntaxKind.DotToken));
+        }
+
         public static ThrowStatementSyntax GenerateThrowStatement(Type exceptionType, string parameterName)
         {
             return GenerateThrowStatement(exceptionType, parameterName, null);

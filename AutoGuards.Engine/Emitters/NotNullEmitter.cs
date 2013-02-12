@@ -17,8 +17,6 @@ namespace AutoGuards.Engine.Emitters
 
         public override StatementSyntax EmitGuard(AttributeData attribute, TypeSymbol parameterType, string parameterName)
         {
-            //TODO: Replace hardcoded names/symbols
-            //TODO: Refactor common expression building into builder
             StatementSyntax guardStatement = Syntax.IfStatement(
                 Syntax.BinaryExpression(
                     SyntaxKind.EqualsExpression,

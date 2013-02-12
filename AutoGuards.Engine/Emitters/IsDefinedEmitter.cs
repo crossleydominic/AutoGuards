@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoGuards.API;
+using AutoGuards.Engine.Expressions;
 using Roslyn.Compilers.CSharp;
 
 namespace AutoGuards.Engine.Emitters
@@ -18,17 +19,11 @@ namespace AutoGuards.Engine.Emitters
         public override StatementSyntax EmitGuard(AttributeData attribute, TypeSymbol parameterType, string parameterName)
         {            
             //TODO: Consider how to properly handle type conversions
-            //TODO: Refactor common expression building into builder
-            //TODO: Replace hardcoded names/symbols
             StatementSyntax guardStatement = Syntax.IfStatement(
                 Syntax.BinaryExpression(
                     SyntaxKind.EqualsExpression,
                     Syntax.InvocationExpression(
-                        Syntax.MemberAccessExpression(
-                            SyntaxKind.MemberAccessExpression,
-                            Syntax.IdentifierName("global::System.Enum"),
-                            name: Syntax.IdentifierName("IsDefined"),
-                            operatorToken: Syntax.Token(SyntaxKind.DotToken)),
+                        SimpleSyntaxWriter.AccessStaticMember(() => Enum.IsDefined(It.Is<Type>(), It.Is<object>())),
                         Syntax.ArgumentList(
                             Syntax.SeparatedList<ArgumentSyntax>(
                                 Syntax.Argument(

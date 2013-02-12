@@ -60,6 +60,9 @@
     <Compile Include="Emitters\NotNullEmitter.cs" />
     <Compile Include="Emitters\NotNullOrWhitespaceEmitter.cs" />
     <Compile Include="Emitters\SimpleSyntaxWriter.cs" />
+    <Compile Include="Expressions\ExpressionInspector.cs" />
+    <Compile Include="Expressions\It.cs" />
+    <Compile Include="Expressions\Invocation.cs" />
     <Compile Include="GuardedParameter.cs" />
     <Compile Include="MethodInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

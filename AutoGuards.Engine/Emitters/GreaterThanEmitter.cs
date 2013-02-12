@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoGuards.API;
+using AutoGuards.Engine.Expressions;
 using Roslyn.Compilers.CSharp;
 
 namespace AutoGuards.Engine.Emitters
@@ -23,20 +24,13 @@ namespace AutoGuards.Engine.Emitters
                 Syntax.BinaryExpression(
                 SyntaxKind.LessThanOrEqualExpression,
                 Syntax.InvocationExpression(
-               Syntax.MemberAccessExpression(
-                  SyntaxKind.MemberAccessExpression,
-                  Syntax.ParenthesizedExpression(
-                       Syntax.CastExpression(
-                           Syntax.IdentifierName("global::System.IComparable"),
-                           Syntax.IdentifierName(parameterName))),
-                  name: Syntax.IdentifierName("CompareTo"),
-                  operatorToken: Syntax.Token(SyntaxKind.DotToken)),
-                  Syntax.ArgumentList(
-                      Syntax.SeparatedList(
-                          Syntax.Argument(
-                              Syntax.LiteralExpression(
-                              SyntaxKind.StringLiteralExpression,
-                              Syntax.Literal(comparisonValue, "comparisonValue")))))),
+                    SimpleSyntaxWriter.AccessMemberWithCast((IComparable x)=> x.CompareTo(It.Is<object>()), parameterName),
+                    Syntax.ArgumentList(
+                        Syntax.SeparatedList(
+                             Syntax.Argument(
+                                  Syntax.LiteralExpression(
+                                  SyntaxKind.StringLiteralExpression,
+                                  Syntax.Literal(comparisonValue, "comparisonValue")))))),
                 Syntax.IdentifierName("0")),
                 Syntax.Block(
                     SimpleSyntaxWriter.GenerateThrowStatement(typeof(ArgumentException), parameterName, string.Format(@"""{0} is not greater than '" + comparisonValue + @"'.""", parameterName))));
