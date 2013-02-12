@@ -20,23 +20,14 @@ namespace AutoGuards.Engine
             _emitterResolver = new EmitterResolver();
         }
 
-        public List<GuardedParameter> Inspect(MethodDeclarationSyntax method, MethodSymbol methodSymbol)
+        public void InspectHierarchy(MethodSymbol methodSymbol, List<GuardedParameter> guardedParameters)
         {
-            List<GuardedParameter> resolvedParameters = new List<GuardedParameter>();
+            MethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
 
-            //TODO: Need to do things in here like resolve base class/overriden/interface implemented methods
-
-            var constructedFrom = methodSymbol.ConstructedFrom;
-            bool iso = methodSymbol.IsOverride;
-
-            NamedTypeSymbol classSymbol = methodSymbol.ContainingType;
-            var explicitinterfaces = methodSymbol.ExplicitInterfaceImplementations;
-            ReadOnlyArray<NamedTypeSymbol> interfaces = classSymbol.Interfaces;
-            var overriddenmethod = methodSymbol.OverriddenMethod;
-
-
-
-
+            if (overriddenMethod != null)
+            {
+                InspectHierarchy(overriddenMethod, guardedParameters);
+            }
 
             foreach (var parameter in methodSymbol.Parameters)
             {
@@ -45,7 +36,7 @@ namespace AutoGuards.Engine
                 foreach (var attribute in parameter.GetAttributes())
                 {
                     //TODO: Think of a nicer way to ensure the type is declared in the correct assembly and derives from the correct type
-                    Type baseAutoGuardType = typeof (AutoGuardAttribute);
+                    Type baseAutoGuardType = typeof(AutoGuardAttribute);
                     if (string.Equals(attribute.AttributeClass.BaseType.ContainingAssembly.Name, baseAutoGuardType.Assembly.GetName().Name, StringComparison.Ordinal) &&
                         string.Equals(attribute.AttributeClass.BaseType.Name, baseAutoGuardType.Name, StringComparison.Ordinal))
                     {
@@ -54,16 +45,23 @@ namespace AutoGuards.Engine
                             guardedParameter = new GuardedParameter();
                             guardedParameter.ParameterName = parameter.Name;
                             guardedParameter.ParameterType = parameter.Type;
-                            
-                            resolvedParameters.Add(guardedParameter);
+
+                            guardedParameters.Add(guardedParameter);
                         }
-                        
+
                         guardedParameter.Emitters.Add(new EmitterAttributePair(_emitterResolver.Resolve(attribute.AttributeClass.Name), attribute));
                     }
-                } 
+                }
             }
+        }
 
-            return resolvedParameters;
+        public List<GuardedParameter> Inspect(MethodDeclarationSyntax method, MethodSymbol methodSymbol)
+        {
+            List<GuardedParameter> guardedParameters = new List<GuardedParameter>();
+
+            InspectHierarchy(methodSymbol, guardedParameters);
+
+            return guardedParameters;
         }
     }
 }
