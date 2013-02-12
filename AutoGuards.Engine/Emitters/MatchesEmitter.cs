@@ -24,19 +24,13 @@ namespace AutoGuards.Engine.Emitters
             
             StatementSyntax guardStatement = Syntax.IfStatement(
                 Syntax.BinaryExpression(
-                SyntaxKind.EqualsExpression,
-                Syntax.InvocationExpression(
-                   SimpleSyntaxWriter.AccessStaticMember(() => Regex.IsMatch(It.Is<string>(), It.Is<string>())),
-                   Syntax.ArgumentList(
-                       Syntax.SeparatedList<ArgumentSyntax>(
-                           Syntax.Argument(
-                                Syntax.IdentifierName(parameterName)),    
-                           Syntax.Token(SyntaxKind.CommaToken),
-                           Syntax.Argument(
-                               Syntax.LiteralExpression(
-                               SyntaxKind.StringLiteralExpression,
-                               Syntax.Literal(@"""" + regexMatchString + @"""", "regexMatchString")))))), 
-                Syntax.IdentifierName("false")),
+                    SyntaxKind.EqualsExpression,
+                    SimpleSyntaxWriter.InvokeStaticMethod(
+                    () => Regex.IsMatch(It.Is<string>(), It.Is<string>()),
+                        SimpleSyntaxWriter.ArgumentFromIdentifier(parameterName), 
+                        SimpleSyntaxWriter.ArgumentFromLiteral(regexMatchString, true)
+                    ), 
+                    Syntax.IdentifierName("false")),
                 Syntax.Block(
                     SimpleSyntaxWriter.GenerateThrowStatement(typeof(ArgumentException), parameterName, string.Format(@"""{0} does not match the regular expression '" + regexMatchString + @"'.""", parameterName))));
 

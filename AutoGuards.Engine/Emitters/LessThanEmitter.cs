@@ -23,14 +23,10 @@ namespace AutoGuards.Engine.Emitters
             StatementSyntax guardStatement = Syntax.IfStatement(
                 Syntax.BinaryExpression(
                     SyntaxKind.GreaterThanOrEqualExpression,
-                    Syntax.InvocationExpression(
-                        SimpleSyntaxWriter.AccessMemberWithCast((IComparable x)=>x.CompareTo(It.Is<object>()), parameterName),
-                        Syntax.ArgumentList(
-                            Syntax.SeparatedList(
-                                Syntax.Argument(
-                                    Syntax.LiteralExpression(
-                                    SyntaxKind.StringLiteralExpression,
-                                    Syntax.Literal(comparisonValue, "comparisonValue")))))),
+                    SimpleSyntaxWriter.InvokeMethodWithCast(
+                        (IComparable x)=>x.CompareTo(It.Is<object>()), 
+                        parameterName,
+                        SimpleSyntaxWriter.ArgumentFromLiteral(comparisonValue, false)),
                 Syntax.IdentifierName("0")),
                 Syntax.Block(
                     SimpleSyntaxWriter.GenerateThrowStatement(typeof(ArgumentException), parameterName, string.Format(@"""{0} is not less than '" + comparisonValue + @"'.""", parameterName))));

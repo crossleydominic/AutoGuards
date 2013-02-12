@@ -22,18 +22,11 @@ namespace AutoGuards.Engine.Emitters
             StatementSyntax guardStatement = Syntax.IfStatement(
                 Syntax.BinaryExpression(
                     SyntaxKind.EqualsExpression,
-                    Syntax.InvocationExpression(
-                        SimpleSyntaxWriter.AccessStaticMember(() => Enum.IsDefined(It.Is<Type>(), It.Is<object>())),
-                        Syntax.ArgumentList(
-                            Syntax.SeparatedList<ArgumentSyntax>(
-                                Syntax.Argument(
-                                    Syntax.TypeOfExpression(
-                                        Syntax.IdentifierName(parameterType.Name))),
-                                Syntax.Token(SyntaxKind.CommaToken),
-                                Syntax.Argument(
-                                    Syntax.LiteralExpression(
-                                    SyntaxKind.StringLiteralExpression,
-                                    Syntax.Literal(parameterName, parameterName)))))),
+                    SimpleSyntaxWriter.InvokeStaticMethod(
+                        () => Enum.IsDefined(It.Is<Type>(), It.Is<object>()),
+                        SimpleSyntaxWriter.ArgumentFromTypeof(parameterType.Name),
+                        SimpleSyntaxWriter.ArgumentFromLiteral(parameterName, false)
+                    ),
                     Syntax.IdentifierName("false")),
                     Syntax.Block(
                         SimpleSyntaxWriter.GenerateThrowStatement(typeof(ArgumentException), parameterName, string.Format(@"""{0} value is not defined for the enum type.""", parameterName))));

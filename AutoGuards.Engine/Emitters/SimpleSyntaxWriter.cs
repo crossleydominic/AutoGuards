@@ -11,6 +11,42 @@ namespace AutoGuards.Engine.Emitters
 {
     public static class SimpleSyntaxWriter
     {
+        public static InvocationExpressionSyntax InvokeMethodWithCast<TIn, TOut>(Expression<Func<TIn, TOut>> exp, string parameterName, params ArgumentSyntax[] arguments)
+        {
+            return Syntax.InvocationExpression(
+                        AccessMemberWithCast(exp, parameterName),
+                        Syntax.ArgumentList(
+                            Syntax.SeparatedList<ArgumentSyntax>(arguments, Enumerable.Repeat(Syntax.Token(SyntaxKind.CommaToken), arguments.Length - 1))));
+        }
+
+        public static InvocationExpressionSyntax InvokeStaticMethod<T>(Expression<Func<T>> exp, params ArgumentSyntax[] arguments)
+        {
+            return Syntax.InvocationExpression(
+                        AccessStaticMember(exp),
+                        Syntax.ArgumentList(
+                            Syntax.SeparatedList<ArgumentSyntax>(arguments, Enumerable.Repeat(Syntax.Token(SyntaxKind.CommaToken), arguments.Length - 1))));
+        }
+
+        public static ArgumentSyntax ArgumentFromTypeof(string typeName)
+        {
+            return Syntax.Argument(Syntax.TypeOfExpression(Syntax.IdentifierName(typeName)));
+        }
+
+        public static ArgumentSyntax ArgumentFromIdentifier(string identifier)
+        {
+            return Syntax.Argument(Syntax.IdentifierName(identifier));
+        }
+
+        public static ArgumentSyntax ArgumentFromLiteral(string literal, bool requiresQuotes)
+        {
+            string literalValue = requiresQuotes ? @"""" + literal + @"""" : literal;
+
+            return Syntax.Argument(
+                Syntax.LiteralExpression(
+                    SyntaxKind.StringLiteralExpression,
+                    Syntax.Literal(literalValue, "literalValue")));
+        }
+
         public static MemberAccessExpressionSyntax AccessStaticMember<T>(Expression<Func<T>> exp)
         {
             Invocation mi = ExpressionInspector.GetInvocation(exp.Body);

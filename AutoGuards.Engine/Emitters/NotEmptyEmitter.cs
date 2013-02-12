@@ -20,7 +20,6 @@ namespace AutoGuards.Engine.Emitters
             StatementSyntax guardStatement = Syntax.IfStatement(
                 Syntax.BinaryExpression(
                     SyntaxKind.LessThanOrEqualExpression, 
-                    //SimpleSyntaxWriter.AccessMemberWithCast(typeof(IList), parameterName, "Count"),
                     SimpleSyntaxWriter.AccessMemberWithCast((IList x)=>x.Count, parameterName),
                             Syntax.IdentifierName("0")),
                     Syntax.Block(
