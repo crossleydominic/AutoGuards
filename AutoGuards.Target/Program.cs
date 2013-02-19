@@ -14,6 +14,7 @@ namespace AutoGuards.Target
         private static void Main(string[] args)
         {
             //Simple scenario
+            Console.WriteLine("=== Start of Simple Scenarios ===");
             SimpleImplementation impl = new SimpleImplementation();
 
             ScenarioExecutionScope.Execute(() => { impl.UsesNotNull(null); }, true);
@@ -44,6 +45,7 @@ namespace AutoGuards.Target
             ScenarioExecutionScope.Execute(() => { impl.GreaterThan(15); }, false);
 
             //Overriding scenario
+            Console.WriteLine("=== Start of Overriding Scenarios ===");
             OverridingImplementationDerived implDerived = new OverridingImplementationDerived();
             ScenarioExecutionScope.Execute(() => { implDerived.AbstractMethod(null); }, true);
             ScenarioExecutionScope.Execute(() => { implDerived.AbstractMethod(string.Empty); }, true);
@@ -56,6 +58,22 @@ namespace AutoGuards.Target
 
             ScenarioExecutionScope.Execute(() => { implDerived.MethodToBeHidden("A"); }, true);
             ScenarioExecutionScope.Execute(() => { implDerived.MethodToBeHidden("5"); }, false);
+
+            //Interface implementation scenario
+            Console.WriteLine("=== Start of Interface Implementing Scenarios ===");
+            ImplementingOneInterface implOne = new ImplementingOneInterface();
+            ScenarioExecutionScope.Execute(() => { implOne.InterfaceAMethod(null); }, true);
+            ScenarioExecutionScope.Execute(() => { implOne.InterfaceAMethod("5"); }, false);
+
+            ScenarioExecutionScope.Execute(() => { implOne.SharedMethod(20); }, true);
+            ScenarioExecutionScope.Execute(() => { implOne.SharedMethod(120); }, true);
+            ScenarioExecutionScope.Execute(() => { implOne.SharedMethod(80); }, false);
+
+            ScenarioExecutionScope.Execute(() => { ((IInterfaceA)implOne).ExplicitlyImplmentedMethod(null); }, true);
+            ScenarioExecutionScope.Execute(() => { ((IInterfaceA)implOne).ExplicitlyImplmentedMethod(""); }, true);
+            ScenarioExecutionScope.Execute(() => { ((IInterfaceA)implOne).ExplicitlyImplmentedMethod("d"); }, false);
+            ScenarioExecutionScope.Execute(() => { ((IInterfaceA)implOne).ExplicitlyImplmentedMethod("a"); }, false);
+
 
             Console.WriteLine("Finished... ");
             Console.ReadLine();

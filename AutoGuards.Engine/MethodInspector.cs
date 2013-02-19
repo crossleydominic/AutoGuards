@@ -23,10 +23,29 @@ namespace AutoGuards.Engine
         public void InspectHierarchy(MethodSymbol methodSymbol, List<GuardedParameter> guardedParameters)
         {
             MethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+            TypeSymbol owningType = methodSymbol.ContainingType;
 
             if (overriddenMethod != null)
             {
                 InspectHierarchy(overriddenMethod, guardedParameters);
+            }
+            else
+            {
+                //Check to see if this method is an implementation of an interface method
+
+                var members = owningType.AllInterfaces.SelectMany(x => x.GetMembers());
+
+                IEnumerable<Symbol> interfaceMethods = members.
+                    Where(m => methodSymbol.Equals(owningType.FindImplementationForInterfaceMember(m)));
+
+                foreach (Symbol interfaceMethod in interfaceMethods)
+                {
+                    MethodSymbol interfaceMethodSymbol = interfaceMethod as MethodSymbol;
+                    if (interfaceMethodSymbol != null)
+                    {
+                        InspectHierarchy(interfaceMethodSymbol, guardedParameters);
+                    }
+                }
             }
 
             foreach (var parameter in methodSymbol.Parameters)
