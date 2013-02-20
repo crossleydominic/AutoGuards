@@ -14,6 +14,7 @@ namespace AutoGuards.Target
         private static void Main(string[] args)
         {
             //Simple scenario
+            Console.WriteLine();
             Console.WriteLine("=== Start of Simple Scenarios ===");
             SimpleImplementation impl = new SimpleImplementation();
 
@@ -43,8 +44,10 @@ namespace AutoGuards.Target
 
             ScenarioExecutionScope.Execute(() => { impl.GreaterThan(6); }, true);
             ScenarioExecutionScope.Execute(() => { impl.GreaterThan(15); }, false);
+            Console.WriteLine("=== End of Simple Scenarios ===");
 
             //Overriding scenario
+            Console.WriteLine();
             Console.WriteLine("=== Start of Overriding Scenarios ===");
             OverridingImplementationDerived implDerived = new OverridingImplementationDerived();
             ScenarioExecutionScope.Execute(() => { implDerived.AbstractMethod(null); }, true);
@@ -58,9 +61,11 @@ namespace AutoGuards.Target
 
             ScenarioExecutionScope.Execute(() => { implDerived.MethodToBeHidden("A"); }, true);
             ScenarioExecutionScope.Execute(() => { implDerived.MethodToBeHidden("5"); }, false);
+            Console.WriteLine("=== End of Overriding Scenarios ===");
 
             //Interface implementation scenario
-            Console.WriteLine("=== Start of Interface Implementing Scenarios ===");
+            Console.WriteLine();
+            Console.WriteLine("=== Start of Interface Implementing (One) Scenarios ===");
             ImplementingOneInterface implOne = new ImplementingOneInterface();
             ScenarioExecutionScope.Execute(() => { implOne.InterfaceAMethod(null); }, true);
             ScenarioExecutionScope.Execute(() => { implOne.InterfaceAMethod("5"); }, false);
@@ -73,7 +78,15 @@ namespace AutoGuards.Target
             ScenarioExecutionScope.Execute(() => { ((IInterfaceA)implOne).ExplicitlyImplmentedMethod(""); }, true);
             ScenarioExecutionScope.Execute(() => { ((IInterfaceA)implOne).ExplicitlyImplmentedMethod("d"); }, false);
             ScenarioExecutionScope.Execute(() => { ((IInterfaceA)implOne).ExplicitlyImplmentedMethod("a"); }, false);
+            Console.WriteLine("=== End of Interface Implementing (One) Scenarios ===");
 
+            Console.WriteLine();
+            Console.WriteLine("=== Start of Interface Implementing (Both) Scenarios ===");
+            ImplemetingBothInterfaces implBoth = new ImplemetingBothInterfaces();
+            ScenarioExecutionScope.Execute(() => { implBoth.SharedMethod(20); }, true);
+            ScenarioExecutionScope.Execute(() => { implBoth.SharedMethod(120); }, true);
+            ScenarioExecutionScope.Execute(() => { implBoth.SharedMethod(80); }, false);
+            Console.WriteLine("=== End of Interface Implementing (Both) Scenarios ===");
 
             Console.WriteLine("Finished... ");
             Console.ReadLine();
